@@ -46,6 +46,24 @@ In a Claude Code session:
 Or schedule it monthly if your setup supports scheduled/cron-style agent
 runs.
 
+## Things to Try
+
+1. **Run it once with a 1-week window** — narrow the "Setup" step to the last
+   7 days on a machine you use daily. You should get back a short report
+   even if some miners (claude-mem, daily logs) find nothing to say.
+2. **Check what Miner 4 finds stale** — run just the live-inventory commands
+   by hand first. If you spot a cron job or scheduled task with no recent
+   output, that's the exact class of finding this skill exists to surface.
+3. **Read the date-bucketing example and try it on your own repo** — swap in
+   a path you suspect had a fix land recently; a commit-count cliff means
+   the audit would otherwise over-rank a dead issue.
+4. **Run it on two machines you use** and diff the reports — one machine
+   skewing almost entirely toward automation (near-zero typed prompts) is a
+   real signal, not a bug in the miner.
+5. **Re-run it a month later** and check the "read the most recent past
+   report first" instruction actually holds — nothing from the prior run's
+   implementation log should resurface as a new finding.
+
 ## What it mines
 
 | Source | What it's looking for |
