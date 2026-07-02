@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>usage-audit — Social Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060810;--teal:#00d4ff;--purple:#a78bfa;--amber:#f59e0b;--green:#34d399;--red:#f87171;
+  --text:#f0f4ff;--dim:rgba(240,244,255,.5);
+  --font:'Space Grotesk',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+html,body{width:1200px;height:630px;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font)}
+
+.bg{position:absolute;inset:0;overflow:hidden}
+.bg-gradient{position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 15% 50%,rgba(124,58,237,.22) 0%,transparent 55%),
+             radial-gradient(ellipse 60% 70% at 85% 20%,rgba(0,212,255,.16) 0%,transparent 55%),
+             linear-gradient(180deg,#060810 0%,#0b0820 50%,#060810 100%);
+}
+canvas{position:absolute;inset:0}
+
+.term{
+  position:absolute;top:50%;right:60px;transform:translateY(-50%);
+  width:500px;
+  background:rgba(8,10,20,.78);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;
+  box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(0,212,255,.06) inset;
+  overflow:hidden;
+  font-family:var(--mono);
+}
+.term-head{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 16px;
+  background:rgba(255,255,255,.04);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.term-head .dot{width:11px;height:11px;border-radius:50%;background:#4a4f60}
+.term-head .dot.r{background:#ff5f56}
+.term-head .dot.y{background:#ffbd2e}
+.term-head .dot.g{background:#27c93f}
+.term-head .label{
+  margin-left:8px;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;
+}
+.term-body{
+  padding:20px 22px 22px;
+  font-size:12.5px;line-height:1.85;color:rgba(220,228,255,.55);
+}
+.term-body .prompt{color:var(--teal);user-select:none}
+.term-body .cmd{color:#fff}
+.term-body .arg{color:var(--amber)}
+.term-body .out{display:block;padding-left:0}
+.term-body .ok{color:var(--green);font-weight:600}
+.term-body .url{color:rgba(167,139,250,.85)}
+.term-body .id{color:var(--teal);font-weight:600}
+.term-body .muted{color:rgba(220,228,255,.35)}
+
+.content{position:absolute;top:50%;left:80px;transform:translateY(-50%);max-width:520px;z-index:10}
+.tag{
+  font-size:13px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--teal);opacity:.9;margin-bottom:22px;
+}
+.tag .sep{opacity:.35;margin:0 10px}
+.title{
+  font-size:80px;font-weight:700;line-height:.96;letter-spacing:-.03em;
+  background:linear-gradient(130deg,#fff 18%,#a5d8ff 55%,#9b8cff 92%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:20px;
+}
+.tagline{
+  font-size:20px;font-weight:400;color:var(--dim);line-height:1.45;
+  max-width:480px;margin-bottom:30px;
+}
+.pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+  border-radius:30px;padding:9px 18px;
+  font-size:13px;font-weight:500;letter-spacing:.06em;
+}
+.pill .lbl{opacity:.4;font-size:10px;text-transform:uppercase;letter-spacing:.18em}
+.pill .url{color:var(--teal);opacity:.92;font-family:var(--mono);font-size:13px}
+
+.footer{
+  position:absolute;bottom:32px;left:80px;right:80px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;font-weight:600;letter-spacing:.20em;text-transform:uppercase;
+  color:rgba(255,255,255,.30);
+}
+</style>
+</head>
+<body>
+<div class="bg">
+  <div class="bg-gradient"></div>
+  <canvas id="stars"></canvas>
+</div>
+
+<div class="term">
+  <div class="term-head">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="label">claude code</span>
+  </div>
+  <div class="term-body">
+    <span class="prompt">&gt;</span> <span class="cmd">run a usage audit</span><br>
+    <span class="out muted">Mining logs, transcripts, memory...</span>
+    <span class="out muted">4 cheap-model miners done</span>
+    <span class="out"><span class="ok">✓</span> <span class="muted">New Skills:</span> <span class="id">3</span> <span class="muted">candidates</span></span>
+    <span class="out"><span class="ok">✓</span> <span class="muted">Automations:</span> <span class="id">5</span> <span class="muted">candidates</span></span>
+    <span class="out"><span class="ok">✓</span> <span class="muted">Small Fixes:</span> <span class="id">9</span> <span class="muted">candidates</span></span>
+    <span class="out muted">Nothing built — awaiting review.</span>
+  </div>
+</div>
+
+<div class="content">
+  <div class="tag">Claude Code Skill<span class="sep">·</span>MIT</div>
+  <h1 class="title">Usage<br>Audit</h1>
+  <p class="tagline">Reflect on past Claude Code sessions to find the highest-leverage skills and automations to build next — evidence, not implementation.</p>
+  <div class="pill"><span class="lbl">Repo</span><span class="url">github.com/ibrews/claude-usage-audit</span></div>
+</div>
+
+<div class="footer">
+  <span>Cheap Miners · Frontier Clustering</span>
+  <span>Evidence, Not Implementation</span>
+</div>
+
+<script>
+const cv=document.getElementById('stars'),sc=cv.getContext('2d');
+cv.width=1200;cv.height=630;
+const stars=Array.from({length:90},()=>({
+  x:Math.random()*1200,y:Math.random()*630,
+  r:Math.random()*1.4+.3,o:Math.random()*.5+.15
+}));
+sc.clearRect(0,0,1200,630);
+stars.forEach(s=>{
+  sc.beginPath();sc.arc(s.x,s.y,s.r,0,Math.PI*2);
+  sc.fillStyle=`rgba(210,225,255,${s.o})`;sc.fill();
+});
+</script>
+</body>
+</html>
